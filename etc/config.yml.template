@@ -18,6 +18,11 @@ default_notification_to_address: ""
 
 # SMTP connection string
 smtp_connection_string: "localhost"
+login_to_smtp: false
+
+smtp_username: ""
+smtp_password: ""
+smtp_use_tls: true
 
 # defines where to send the alerts
 # '*' and '?' are wildcards
