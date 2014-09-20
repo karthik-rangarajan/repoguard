@@ -13,7 +13,10 @@ class DataStoreException (Exception):
 
 
 class DataStore:
-    def __init__(self, host, port, username=None, password=None, use_ssl=False):
+    def __init__(self, host, port, username=None, password=None, use_ssl=False, default_index=None,
+                 default_doctype=None):
+        self.index = default_index
+        self.doc_type = default_doctype
         if username and password:
             self.es_connection = Elasticsearch(host=host, port=port, http_auth=username + ":" + password,
                                                use_ssl=use_ssl)
@@ -23,20 +26,26 @@ class DataStore:
             raise DataStoreException("Connection to ElasticSearch failed.")
             self.es_connection = False
 
-    def store(self, body, index, doc_type):
+    def store(self, body):
         try:
-            self.es_connection.create(body=body, id=hashlib.sha1(str(body)).hexdigest(), index=index,
-                                      doc_type=doc_type)
+            self.es_connection.create(body=body, id=hashlib.sha1(str(body)).hexdigest(), index=self.index,
+                                      doc_type=self.doc_type)
         except ElasticsearchException, e:
-            raise DataStoreException("Exception while storing data in Elastic Search: " + e.getDetail)
+            raise DataStoreException("Exception while storing data in Elastic Search: " + e.message)
 
-    def search(self, index, doc_type, query=None, params=None):
+    def search(self, query=None, params=None):
         try:
             if params:
-                results = self.es_connection.search(body=query, index=index, doc_type=doc_type, params=params)
+                results = self.es_connection.search(body=query, index=self.index, doc_type=self.doc_type, params=params)
             else:
-                results = self.es_connection.search(body=query, index=index, doc_type=doc_type)
+                results = self.es_connection.search(body=query, index=self.index, doc_type=self.doc_type)
             return results
-        except ElasticsearchException:
-            raise DataStoreException("Exception while searching data in Elastic Search")
+        except ElasticsearchException, e:
+            raise DataStoreException("Exception while searching data in Elastic Search: " + e.message)
 
+    def get(self, issue_id):
+        try:
+            results = self.es_connection.get(index=self.index, doc_type=self.doc_type, id=issue_id)
+            return results
+        except ElasticsearchException, e:
+            raise DataStoreException("Exception while retrieving data based on index ID: " + e.message)
