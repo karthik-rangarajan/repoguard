@@ -1,5 +1,5 @@
 from flask import Flask
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../static")
 app.config.from_object('config')
 
 from issues import get_all_issues
