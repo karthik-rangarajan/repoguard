@@ -190,6 +190,10 @@ class RepoGuard:
                     "repo_name": alert.repo,
                     "@timestamp": datetime.datetime.utcnow().isoformat(),
                     "type": "repoguard"
+                    "type": "repoguard",
+                    "false_positive": False,
+                    "last_reviewer": "repoguard",
+                    "author": alert.author
                 }
 
                 es.create(body=body, id=hashlib.sha1(str(body)).hexdigest(), index='repoguard', doc_type='repoguard')
@@ -283,6 +287,7 @@ class RepoGuard:
 
         try:
             diff_output = subprocess.check_output(cmd.split(), cwd=repo.full_dir_path)
+            author = diff_output.split("Author: ")[1].split("\n")[0]
             splitted = re.split(r'^diff --git a/\S* b/(\S+)$', diff_output, flags=re.MULTILINE)[1:]
 
             for i in xrange(len(splitted) / 2):
@@ -290,7 +295,7 @@ class RepoGuard:
                 diff = splitted[i * 2 + 1]
 
                 result = self.code_checker.check(diff.split('\n'), filename)
-                alerts = [Alert(rule, filename, repo.name, rev_hash, line) for rule, line in result]
+                alerts = [Alert(rule, filename, repo.name, rev_hash, line, author) for rule, line in result]
 
                 matches_in_rev.extend(alerts)
         except subprocess.CalledProcessError as e:
