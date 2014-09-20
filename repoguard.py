@@ -5,18 +5,17 @@ import re
 import os
 import subprocess
 import datetime
-import hashlib
+import arrow
 import argparse
 import logging
 import sys
-from elasticsearch import Elasticsearch, ElasticsearchException
 
 from core.git_repo_updater import GitRepoUpdater
 from core.codechecker import CodeCheckerFactory, Alert
 from core.ruleparser import build_resolved_ruleset, load_rules
 from core.notifier import EmailNotifier, EmailNotifierException
 from core.repository_handler import RepositoryHandler, RepositoryException
-
+from core.datastore import  DataStore, DataStoreException
 
 class RepoGuard:
     def __init__(self):
@@ -177,7 +176,7 @@ class RepoGuard:
 
     def store_results(self):
         (host, port) = self.args.store.split(":")
-        es = Elasticsearch([{"host": host, "port": port}])
+        data_store = DataStore(host=host, port=port)
 
         for alert in self.check_results:
             try:
@@ -189,11 +188,13 @@ class RepoGuard:
                     "matching_line": alert.line[0:200].replace("\t", " ").decode('utf-8', 'replace'),
                     "repo_name": alert.repo,
                     "@timestamp": datetime.datetime.utcnow().isoformat(),
-                    "type": "repoguard"
+                    "type": "repoguard",
+                    "false_positive": False,
+                    "last_reviewer": "repoguard"
                 }
 
-                es.create(body=body, id=hashlib.sha1(str(body)).hexdigest(), index='repoguard', doc_type='repoguard')
-            except ElasticsearchException:
+                data_store.store(body=body, index='repoguard', doc_type='repoguard')
+            except DataStoreException:
                 self.logger.exception('Got exception during storing results to ES.')
 
     # TODO: test
@@ -382,7 +383,8 @@ class RepoGuard:
         self.check_new_code(self.detect_rename)
 
         if self.args.notify:
-            self.send_results()
+            pass
+            # self.send_results()
 
         if self.args.store:
             self.store_results()

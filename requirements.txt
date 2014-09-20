@@ -3,3 +3,5 @@ argparse==1.2.1
 elasticsearch
 pyyaml
 jsonpickle
+flask
+arrow
