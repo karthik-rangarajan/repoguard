@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, redirect
 app = Flask(__name__, static_folder="../static")
 app.config.from_object('config')
 

@@ -5,8 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/repoguard.css" rel="stylesheet" />
     <script src="js/jquery.min.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/user.js" type="application/javascript"></script>
+    <script src="js/issues.js" type="application/javascript"></script>
     <title>Repoguard Issues</title>
 </head>
 <body>
@@ -21,11 +24,32 @@
             <li><a href="#">Top Rule Hits</a></li>
             <li><a href="#">Top Offenders</a></li>
         </ul>
-        <p class="navbar-text navbar-right">Karthik Rangarajan</p>
+        <p class="navbar-text navbar-right" id="current-user"></p>
         </div>
     </div>
-
 </nav>
+<div class="container-fluid" id="issue-table">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-striped table-responsive">
+                <thead>
+                <tr>
+                    <th style="width:8%">Repository</th>
+                    <th style="width:20%">Commit ID</th>
+                    <th style="width:30%">Matching Line</th>
+                    <th style="width:15%">File Name</th>
+                    <th style="width:12%">Description</th>
+                    <th style="width:10%">Last Reviewed By</th>
+                    <th style="width:5%">Status</th>
+                </tr>
+                </thead>
+                <tbody id="issue-body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <h1></h1>
 </body>
 </html>

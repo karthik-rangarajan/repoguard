@@ -1,0 +1,7 @@
+ #issue-table table {
+     table-layout: fixed;
+     margin-top: 100px;
+     margin-left: 10px;
+     margin-right: 10px;
+ }
+ #issue-table th, #issue-table td { word-wrap: break-word }

@@ -12,3 +12,5 @@ curl https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js > stati
 
 # Download jQuery
 curl https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js > static/js/jquery.min.js
+
+\
