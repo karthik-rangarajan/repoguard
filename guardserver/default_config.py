@@ -18,3 +18,7 @@ ELASTIC_HOST = "localhost"
 ELASTIC_PORT = "9200"
 INDEX = "repoguard"
 DOC_TYPE = "repoguard"
+
+# Github Configuration
+GITHUB_TOKEN = ""
+ORG_NAME = ""

@@ -1,7 +1,17 @@
- #issue-table table {
+ #issue-table-valid table, #issue-table-all table{
      table-layout: fixed;
-     margin-top: 100px;
+     margin-top: 30px;
      margin-left: 10px;
      margin-right: 10px;
  }
- #issue-table th, #issue-table td { word-wrap: break-word }
+
+ #issue-tabs {
+    margin-top: 100px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+ }
+
+ #issue-table-valid th, #issue-table-valid td, #issue-table-all th, #issue-table-all td  { word-wrap: break-word }
+
+ { word-wrap: break-word }

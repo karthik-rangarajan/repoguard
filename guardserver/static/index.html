@@ -28,28 +28,60 @@
         </div>
     </div>
 </nav>
-<div class="container-fluid" id="issue-table">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-hover table-striped table-responsive">
-                <thead>
-                <tr>
-                    <th style="width:8%">Repository</th>
-                    <th style="width:20%">Commit ID</th>
-                    <th style="width:30%">Matching Line</th>
-                    <th style="width:15%">File Name</th>
-                    <th style="width:12%">Description</th>
-                    <th style="width:10%">Last Reviewed By</th>
-                    <th style="width:5%">Status</th>
-                </tr>
-                </thead>
-                <tbody id="issue-body">
 
-                </tbody>
-            </table>
+<ul class="nav nav-pills" role="tablist" id="issue-tabs">
+    <li class="active"><a href="#issue-table-valid" role="tab" data-toggle="tab" id="valid-issues">Valid Issues</a></li>
+    <li><a href="#issue-table-all" role="tab" data-toggle="tab">All Issues</a></li>
+</ul>
+
+<div class="tab-content">
+    <div class="container-fluid tab-pane active"  id="issue-table-valid">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-striped table-responsive active">
+                    <thead>
+                    <tr>
+                        <th style="width:8%">Repository</th>
+                        <th style="width:20%">Commit ID</th>
+                        <th style="width:30%">Matching Line</th>
+                        <th style="width:15%">File Name</th>
+                        <th style="width:12%">Description</th>
+                        <th style="width:10%">Last Reviewed By</th>
+                        <th style="width:5%">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="issue-body-valid">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <div class="container-fluid tab-pane"  id="issue-table-all">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th style="width:8%">Repository</th>
+                        <th style="width:20%">Commit ID</th>
+                        <th style="width:30%">Matching Line</th>
+                        <th style="width:15%">File Name</th>
+                        <th style="width:12%">Description</th>
+                        <th style="width:10%">Last Reviewed By</th>
+                        <th style="width:5%">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody id="issue-body-all">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
-<h1></h1>
+
 </body>
 </html>

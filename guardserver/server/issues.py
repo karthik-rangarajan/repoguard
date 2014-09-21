@@ -2,6 +2,7 @@ from . import app
 from authentication import requires_auth
 from core.elastic_search_helpers import ElasticSearchHelpers
 from core.datastore import DataStore, DataStoreException
+from core.git_repo_querier import GitRepoQuerier
 from flask import request, make_response
 import arrow
 import json
@@ -16,16 +17,19 @@ def get_data_store():
 @requires_auth
 # Takes the time in days as an argument
 # TODO (karthik): Allow set time intervals (i.e., between x and y, or before x, etc.)
-def get_all_issues():
+def get_issues():
     from_time = int(request.args.get("time", 1))
     start = int(request.args.get("from", 0))
     end = int(request.args.get("to", 100))
     start_time = arrow.utcnow().replace(days=-from_time).float_timestamp * 1000
     end_time = arrow.utcnow().float_timestamp * 1000
+    false_positive = request.args.get("false_positive", "false")
     sort_order = ElasticSearchHelpers.create_sort(True)
     time_filter = ElasticSearchHelpers.create_timestamp_filter(start_time, end_time)
+    query_filter = ElasticSearchHelpers.create_query_string_filter("false_positive:" + false_positive)
     try:
-        query = ElasticSearchHelpers.create_elasticsearch_filtered_query(timestamp_filter=time_filter,
+        query = ElasticSearchHelpers.create_elasticsearch_filtered_query(filtered_query=query_filter,
+                                                                         timestamp_filter=time_filter,
                                                                          sort_order=sort_order)
         datastore = get_data_store()
         params = dict(from_=start)
@@ -38,7 +42,8 @@ def get_all_issues():
     except DataStoreException:
         return "Failed to retrieve issues", 500
 
-@app.route('/issues/<string:issue_id>')
+@app.route('/issue/<string:issue_id>')
+@requires_auth
 def get_issue(issue_id):
     try:
         datastore = get_data_store()
@@ -50,6 +55,7 @@ def get_issue(issue_id):
         return "Failed to retrieve issues", 500
 
 @app.route('/issues/commit/<string:commit_id>')
+@requires_auth
 def get_issues_by_commit(commit_id):
     start = int(request.args.get("from", 0))
     end = int(request.args.get("to", 100))
@@ -66,6 +72,18 @@ def get_issues_by_commit(commit_id):
         return response
     except DataStoreException:
         return "Failed to retrieve issues by commit", 500
+
+
+@app.route('/issue/get_contents/<string:commit_id>')
+@requires_auth
+def get_file_contents_by_commit(commit_id):
+    file_path = request.args.get("file_path")
+    repo = request.args.get("repo")
+    if not file_path or not repo:
+        return "File Path/Repository is required", 400
+    github_querier = GitRepoQuerier(app.config["ORG_NAME"], app.config["GITHUB_TOKEN"])
+    file_contents = github_querier.get_file_contents(repo=repo, filename=file_path, commit_id=commit_id)
+    return file_contents
 
 
 def make_issues_object(results):
