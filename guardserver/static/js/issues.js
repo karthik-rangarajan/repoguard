@@ -40,6 +40,7 @@ function get_issues(time, false_positive) {
 
 function add_issues_to_table(data, dom_element) {
     $(dom_element).empty();
+    server = localStorage.getItem("server");
     $.each(data, function(){
         var source = this["_source"];
         var status_change = source["false_positive"] == "true" ? ["Valid", false]: ["Invalid", true];
