@@ -3,7 +3,7 @@ from authentication import requires_auth
 from core.elastic_search_helpers import ElasticSearchHelpers
 from core.datastore import DataStore, DataStoreException
 from core.git_repo_querier import GitRepoQuerier
-from flask import request, make_response
+from flask import request, make_response, escape
 import arrow
 import json
 
@@ -35,7 +35,7 @@ def get_issues():
         params = dict(from_=start)
         params["size"] = end
         results = datastore.search(query=query, params=params)
-        issues = make_issues_object(results["hits"]["hits"])
+        issues = make_issues_object(results["hits"]["hits"], results["hits"]["total"])
         response = make_response(json.dumps(issues))
         response.headers["Content-Type"] = "application/json"
         return response
@@ -66,7 +66,7 @@ def get_issues_by_commit(commit_id):
     try:
         datastore = get_data_store()
         results = datastore.search(params=query)
-        issues = make_issues_object(results["hits"]["hits"])
+        issues = make_issues_object(results["hits"]["hits"], results["hits"]["total"])
         response = make_response(json.dumps(issues))
         response.headers["Content-Type"] = "application/json"
         return response
@@ -85,12 +85,30 @@ def get_file_contents_by_commit(commit_id):
     file_contents = github_querier.get_file_contents(repo=repo, filename=file_path, commit_id=commit_id)
     return file_contents
 
+@app.route('/issue/status/<string:issue_id>', methods=['PUT'])
+def update_issue_state(issue_id):
+    if "status" in request.form and "current_user" in request.form:
+        changed_status = request.form["status"]
+        current_user = request.form["current_user"]
+    else:
+        return "Changed Status Value Required.", 400
 
-def make_issues_object(results):
-    issues = []
+    doc = ElasticSearchHelpers.create_elasticsearch_doc({"false_positive":changed_status,
+                                                         "last_reviewer": current_user})
+    try:
+        datastore = get_data_store()
+        datastore.update(index_id=issue_id, doc=doc)
+        return "Completed"
+    except DataStore, e:
+        return "Failed to update issue status", 500
+
+
+def make_issues_object(results,total):
+    issues = dict(total=total)
+    issues["issues"] = []
     for result in results:
         issue = dict(id=result["_id"])
         issue["_source"] = result["_source"]
-        issues.append(issue)
+        issues["issues"].append(issue)
     return issues
 

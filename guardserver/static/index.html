@@ -10,6 +10,7 @@
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
     <script src="js/user.js" type="application/javascript"></script>
     <script src="js/issues.js" type="application/javascript"></script>
+    <script src="js/paginate.js" type="application/javascript"></script>
     <title>Repoguard Issues</title>
 </head>
 <body>
@@ -29,11 +30,12 @@
     </div>
 </nav>
 
-<ul class="nav nav-pills" role="tablist" id="issue-tabs">
+<ul class="nav nav-tabs" role="tablist" id="issue-tabs">
     <li class="active"><a href="#issue-table-valid" role="tab" data-toggle="tab" id="valid-issues">Valid Issues</a></li>
-    <li><a href="#issue-table-all" role="tab" data-toggle="tab">All Issues</a></li>
+    <li><a href="#issue-table-invalid" role="tab" data-toggle="tab">False Positives</a></li>
 </ul>
 
+<!-- This could be replaced with handlebars/done in a better way -->
 <div class="tab-content">
     <div class="container-fluid tab-pane active"  id="issue-table-valid">
         <div class="row">
@@ -42,45 +44,71 @@
                     <thead>
                     <tr>
                         <th style="width:8%">Repository</th>
-                        <th style="width:20%">Commit ID</th>
-                        <th style="width:30%">Matching Line</th>
-                        <th style="width:15%">File Name</th>
-                        <th style="width:12%">Description</th>
-                        <th style="width:10%">Last Reviewed By</th>
-                        <th style="width:5%">Status</th>
+                        <th style="width:20%">Matching Line</th>
+                        <th style="width:20%">File Name</th>
+                        <th style="width:12%">Commit Description</th>
+                        <th style="width: 15%">Triggered By</th>
+                        <th style="width:15%">Last Reviewed By</th>
+                        <th style="width:10%">Change Status</th>
                     </tr>
                     </thead>
                     <tbody id="issue-body-valid">
 
                     </tbody>
                 </table>
+                <ul class="pager">
+                    <li class="previous" id="valid-previous"><a href="javascript:void(0)">&larr; Previous</a></li>
+                    <li class="next" id="valid-next"><a href="javascript:void(0)">Next &rarr;</a></li>
+                </ul>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid tab-pane"  id="issue-table-all">
+    <div class="container-fluid tab-pane"  id="issue-table-invalid">
         <div class="row">
             <div class="col-md-12">
                 <table class="table table-bordered table-hover table-striped table-responsive">
                     <thead>
                     <tr>
                         <th style="width:8%">Repository</th>
-                        <th style="width:20%">Commit ID</th>
-                        <th style="width:30%">Matching Line</th>
-                        <th style="width:15%">File Name</th>
-                        <th style="width:12%">Description</th>
-                        <th style="width:10%">Last Reviewed By</th>
-                        <th style="width:5%">Status</th>
+                        <th style="width:20%">Matching Line</th>
+                        <th style="width:20%">File Name</th>
+                        <th style="width:12%">Commit Description</th>
+                        <th style="width: 15%">Triggered By</th>
+                        <th style="width:15%">Last Reviewed By</th>
+                        <th style="width:10%">Change Status</th>
                     </tr>
                     </thead>
-                    <tbody id="issue-body-all">
+                    <tbody id="issue-body-invalid">
 
                     </tbody>
                 </table>
+                <ul class="pager">
+                    <li class="previous" id="invalid-previous"><a href="javascript:void(0)">&larr; Previous</a></li>
+                    <li class="next" id="invalid-next"><a href="javascript:void(0)">Next &rarr;</a></li>
+                </ul>
             </div>
         </div>
     </div>
 
+</div>
+
+<div class="modal fade" id="code-holder" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="code-label">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="code-label">Affected Code</h4>
+            </div>
+            <div class="modal-body">
+                <pre class="pre-scrollable" id="code-space">
+
+                </pre>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

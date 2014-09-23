@@ -1,4 +1,4 @@
- #issue-table-valid table, #issue-table-all table{
+ #issue-table-valid table, #issue-table-invalid table{
      table-layout: fixed;
      margin-top: 30px;
      margin-left: 10px;
@@ -12,6 +12,6 @@
 
  }
 
- #issue-table-valid th, #issue-table-valid td, #issue-table-all th, #issue-table-all td  { word-wrap: break-word }
+ #issue-table-valid th, #issue-table-valid td, #issue-table-invalid th, #issue-table-invalid td  { word-wrap: break-word }
 
  { word-wrap: break-word }

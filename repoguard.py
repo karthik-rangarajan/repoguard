@@ -176,7 +176,7 @@ class RepoGuard:
 
     def store_results(self):
         (host, port) = self.args.store.split(":")
-        data_store = DataStore(host=host, port=port)
+        data_store = DataStore(host=host, port=port, default_doctype="repoguard", default_index="repoguard")
 
         for alert in self.check_results:
             try:
@@ -191,10 +191,11 @@ class RepoGuard:
                     "type": "repoguard",
                     "false_positive": False,
                     "last_reviewer": "repoguard",
-                    "author": alert.author
+                    "author": alert.author,
+                    "commit_description": alert.commit_description
                 }
 
-                data_store.store(body=body, index='repoguard', doc_type='repoguard')
+                data_store.store(body=body)
             except DataStoreException:
                 self.logger.exception('Got exception during storing results to ES.')
 
@@ -287,13 +288,17 @@ class RepoGuard:
             diff_output = subprocess.check_output(cmd.split(), cwd=repo.full_dir_path)
             author = diff_output.split("Author: ")[1].split("\n")[0]
             splitted = re.split(r'^diff --git a/\S* b/(\S+)$', diff_output, flags=re.MULTILINE)[1:]
+            commit_description_cmd = "git log --pretty=%s -n 1 " + rev_hash
+            commit_description = subprocess.check_output(commit_description_cmd.split(),
+                                                         cwd=repo.full_dir_path).rstrip()
 
             for i in xrange(len(splitted) / 2):
                 filename = splitted[i * 2]
                 diff = splitted[i * 2 + 1]
 
                 result = self.code_checker.check(diff.split('\n'), filename)
-                alerts = [Alert(rule, filename, repo.name, rev_hash, line, author) for rule, line in result]
+                alerts = [Alert(rule, filename, repo.name, rev_hash, line, author, commit_description)
+                          for rule, line in result]
 
                 matches_in_rev.extend(alerts)
         except subprocess.CalledProcessError as e:

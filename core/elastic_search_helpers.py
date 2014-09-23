@@ -71,3 +71,7 @@ class ElasticSearchHelpers:
     @staticmethod
     def create_elasticsearch_simple_query(search_parameter, search_string):
         return dict(q= search_parameter + ":" + search_string)
+
+    @staticmethod
+    def create_elasticsearch_doc(changed_values):
+        return dict(doc=changed_values)

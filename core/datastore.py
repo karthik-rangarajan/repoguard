@@ -31,7 +31,7 @@ class DataStore:
             self.es_connection.create(body=body, id=hashlib.sha1(str(body)).hexdigest(), index=self.index,
                                       doc_type=self.doc_type)
         except ElasticsearchException, e:
-            raise DataStoreException("Exception while storing data in Elastic Search: " + e.message)
+            raise DataStoreException("Exception while storing data in Elastic Search: " + e.info.error)
 
     def search(self, query=None, params=None):
         try:
@@ -41,11 +41,17 @@ class DataStore:
                 results = self.es_connection.search(body=query, index=self.index, doc_type=self.doc_type)
             return results
         except ElasticsearchException, e:
-            raise DataStoreException("Exception while searching data in Elastic Search: " + e.message)
+            raise DataStoreException("Exception while searching data in Elastic Search: " + e.info.error)
 
     def get(self, issue_id):
         try:
             results = self.es_connection.get(index=self.index, doc_type=self.doc_type, id=issue_id)
             return results
         except ElasticsearchException, e:
-            raise DataStoreException("Exception while retrieving data based on index ID: " + e.message)
+            raise DataStoreException("Exception while retrieving data based on index ID: " + e.info.error)
+
+    def update(self, index_id, doc):
+        try:
+            self.es_connection.update(body=doc, id=index_id, doc_type=self.doc_type, index=self.index)
+        except ElasticsearchException, e:
+            raise DataStoreException("Exception while updating data in Elastic Search: " + e.info.error)

@@ -38,13 +38,14 @@ class CodeChecker:
 
 
 class Alert:
-    def __init__(self, rule, filename, repo, commit, line, author):
+    def __init__(self, rule, filename, repo, commit, line, author, commit_description):
         self.rule = rule
         self.filename = filename
         self.repo = repo
         self.commit = commit
         self.line = line
         self.author = author
+        self.commit_description = commit_description
 
 
 
