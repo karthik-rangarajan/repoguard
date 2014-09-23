@@ -14,4 +14,7 @@
 
  #issue-table-valid th, #issue-table-valid td, #issue-table-invalid th, #issue-table-invalid td  { word-wrap: break-word }
 
- { word-wrap: break-word }
+ #date-picker {
+     margin-top: 80px;
+     margin-left: 75%;
+ }

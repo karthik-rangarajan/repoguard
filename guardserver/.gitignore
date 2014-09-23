@@ -1,3 +1,6 @@
-**/bootstrap.*
+**/bootstrap*
 **/jquery.*
 config.py
+**/prettify.js
+**/datepicker*
+**/config.js

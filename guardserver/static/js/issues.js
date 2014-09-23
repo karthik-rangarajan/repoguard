@@ -24,7 +24,8 @@ function get_issues(time, false_positive) {
     params.from = (tab_state.current_page - 1) * tab_state.size;
     params.to = tab_state.size;
     params.false_positive = false_positive;
-    $.getJSON("/issues", params=params, function(data){
+    server = localStorage.getItem("server");
+    $.getJSON(server + "/issues", params=params, function(data){
         if (!false_positive) {
             add_issues_to_table(data.issues, "#issue-body-valid");
             localStorage.setItem("valid-issues", data.total);
@@ -36,6 +37,7 @@ function get_issues(time, false_positive) {
 
     })
 }
+
 function add_issues_to_table(data, dom_element) {
     $(dom_element).empty();
     $.each(data, function(){
@@ -57,7 +59,7 @@ function add_issues_to_table(data, dom_element) {
             var params = Object();
             params.repo = $(this).closest('tr').attr('data-repo');
             params.file_path = $(this).text();
-            $.get("/issue/get_contents/" + commit_id, params=params, function(data){
+            $.get(server + "/issue/get_contents/" + commit_id, params=params, function(data){
                 $("#code-space").append($("<div />").text(data).html());
                 $("#code-holder").modal('show');
             });
@@ -71,7 +73,7 @@ function add_issues_to_table(data, dom_element) {
             params.current_user = localStorage.getItem("current_user");
 
             $.ajax({
-                url: "/issue/status/" + index_id,
+                url: server + "/issue/status/" + index_id,
                 type: 'PUT',
                 data: params,
                 success: function(data) {

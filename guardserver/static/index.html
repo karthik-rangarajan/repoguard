@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/repoguard.css" rel="stylesheet" />
+    <link href="css/datepicker.css" rel="stylesheet" />
+    <link href="css/datepicker3.css" rel="stylesheet" />
     <script src="js/jquery.min.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
     <script src="js/user.js" type="application/javascript"></script>
     <script src="js/issues.js" type="application/javascript"></script>
     <script src="js/paginate.js" type="application/javascript"></script>
+    <script src="js/bootstrap-datepicker.js" type="application/javascript"></script>
+    <script src="js/prettify.js" type="application/javascript"></script>
     <title>Repoguard Issues</title>
 </head>
 <body>
@@ -29,6 +33,7 @@
         </div>
     </div>
 </nav>
+
 
 <ul class="nav nav-tabs" role="tablist" id="issue-tabs">
     <li class="active"><a href="#issue-table-valid" role="tab" data-toggle="tab" id="valid-issues">Valid Issues</a></li>
@@ -103,7 +108,7 @@
                 <h4 class="modal-title" id="code-label">Affected Code</h4>
             </div>
             <div class="modal-body">
-                <pre class="pre-scrollable" id="code-space">
+                <pre class="prettyprint" id="code-space">
 
                 </pre>
             </div>
