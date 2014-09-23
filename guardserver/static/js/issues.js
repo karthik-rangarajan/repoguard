@@ -47,7 +47,7 @@ function add_issues_to_table(data, dom_element) {
             '<td id="' + source["commit_id"] + '"><a href="javascript:void(0)" title="Click to show file">' + source["filename"] + "</a></td>" +
             "<td>" + source["commit_description"] + "</td>" +
             "<td title='" + source["description"] + "'>" + source["check_id"] + "</td>" +
-            "<td>" + source["last_reviewer"] + "</td>" +
+            "<td class='reviewer'>" + source["last_reviewer"] + "</td>" +
             '<td><button type="button" class="btn btn-primary" id="' + this["id"] + '" data-status="' + status_change[1] + '">' +
             'Mark As ' + status_change[0] + '</button>' +
             "</tr>";
@@ -75,13 +75,13 @@ function add_issues_to_table(data, dom_element) {
                 type: 'PUT',
                 data: params,
                 success: function(data) {
-                    $("#" + index_id).attr("data-status", !status);
-                    if (!status) {
-                        $("#" + index_id).text("Mark as Invalid");
+                    $("#" + index_id).attr("data-status", !params.status);
+                    if (!params.status) {
+                        $("#" + index_id).text("Mark as Invalid").closest("tr").find(".reviewer").text(localStorage.getItem("current_user"));
                         $("#issue-body-valid").append($(table_row).clone(true, true));
                     }
                     else {
-                        $("#" + index_id).text("Mark as Valid");
+                        $("#" + index_id).text("Mark as Valid").closest("tr").find(".reviewer").text(localStorage.getItem("current_user"));
                         $("#issue-body-invalid").append($(table_row).clone(true, true));
                     }
                     $(table_row).remove();
