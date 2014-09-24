@@ -56,4 +56,5 @@ def current_user():
     result = dict(name=user)
     response = make_response(json.dumps(result))
     response.headers["Content-Type"] = "application/json"
+    response.headers["Access-Control-Allow-Origin"] = "*"
     return response
