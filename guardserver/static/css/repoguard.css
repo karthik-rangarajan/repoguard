@@ -132,3 +132,17 @@ tr:hover .btn-status {
   border: none;
   color: #27AAE1;
 }
+
+.modal-title{
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 1px;
+  font-size: .9em;
+  padding-top: .5em;
+}
+
+pre.prettyprint,
+pre.prettyprinted{
+  border: 1px solid #ccc;
+  border-radius: 0;
+}

@@ -49,8 +49,10 @@ function add_issues_to_table(data, dom_element) {
             params.repo = $(this).closest('tr').attr('data-repo');
             params.file_path = $(this).text();
             $.get(server + "/issue/get_contents/" + commit_id, params=params, function(data){
+                $('#code-space').removeClass("prettyprinted");
                 $("#code-space").append($("<div />").text(data).html());
                 $("#code-holder").modal('show');
+                prettyPrint();
             });
         });
         $("#" + this["id"]).click(function(){
