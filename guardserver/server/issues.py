@@ -16,13 +16,15 @@ def get_data_store():
 @app.route('/issues/', methods=['GET'])
 @requires_auth
 # Takes the time in days as an argument
-# TODO (karthik): Allow set time intervals (i.e., between x and y, or before x, etc.)
 def get_issues():
-    from_time = int(request.args.get("time", 1))
+    from_time = request.args.get("start_time")
+    to_time = request.args.get("end_time")
     start = int(request.args.get("from", 0))
     end = int(request.args.get("to", 100))
-    start_time = arrow.utcnow().replace(days=-from_time).float_timestamp * 1000
-    end_time = arrow.utcnow().float_timestamp * 1000
+    start_time = int(arrow.get(from_time).float_timestamp * 1000)
+    end_time = int(arrow.get(to_time).float_timestamp * 1000)
+   # start_time = int(arrow.utcnow().replace(days=-7).float_timestamp * 1000)
+   # end_time = int(arrow.utcnow().float_timestamp * 1000)
     false_positive = request.args.get("false_positive", "false")
     sort_order = ElasticSearchHelpers.create_sort(True)
     time_filter = ElasticSearchHelpers.create_timestamp_filter(start_time, end_time)
@@ -38,6 +40,7 @@ def get_issues():
         issues = make_issues_object(results["hits"]["hits"], results["hits"]["total"])
         response = make_response(json.dumps(issues))
         response.headers["Content-Type"] = "application/json"
+        response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     except DataStoreException:
         return "Failed to retrieve issues", 500
@@ -50,6 +53,7 @@ def get_issue(issue_id):
         result = datastore.get(issue_id=issue_id)
         response = make_response(json.dumps(result))
         response.headers["Content-Type"] = "application/json"
+        response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     except DataStoreException:
         return "Failed to retrieve issues", 500
@@ -69,6 +73,7 @@ def get_issues_by_commit(commit_id):
         issues = make_issues_object(results["hits"]["hits"], results["hits"]["total"])
         response = make_response(json.dumps(issues))
         response.headers["Content-Type"] = "application/json"
+        response.headers["Access-Control-Allow-Origin"] = "*"
         return response
     except DataStoreException:
         return "Failed to retrieve issues by commit", 500
@@ -98,7 +103,9 @@ def update_issue_state(issue_id):
     try:
         datastore = get_data_store()
         datastore.update(index_id=issue_id, doc=doc)
-        return "Completed"
+        response = make_response("Completed")
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        return response
     except DataStore, e:
         return "Failed to update issue status", 500
 

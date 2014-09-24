@@ -4,14 +4,14 @@ jQuery(function(){
     valid_tab.size = 10;
     var invalid_tab = Object();
     invalid_tab.current_page = 1;
-    invalid_tab.size = 50;
+    invalid_tab.size = 10;
     localStorage.setItem("valid_tab", JSON.stringify(valid_tab));
     localStorage.setItem("invalid_tab", JSON.stringify(invalid_tab));
-    get_issues(7, false);
-    get_issues(7, true);
+    get_issues(false);
+    get_issues(true);
 });
 
-function get_issues(time, false_positive) {
+function get_issues(false_positive) {
     var tab_state;
     if (false_positive) {
         tab_state = JSON.parse(localStorage.getItem("invalid_tab"));
@@ -19,13 +19,16 @@ function get_issues(time, false_positive) {
     else {
         tab_state = JSON.parse(localStorage.getItem("valid_tab"));
     }
+    var start_time = localStorage.getItem("start_date");
+    var end_time = localStorage.getItem("end_date");
     var params = Object();
-    params.time = time;
+    params.start_time = start_time;
+    params.end_time = end_time;
     params.from = (tab_state.current_page - 1) * tab_state.size;
     params.to = tab_state.size;
     params.false_positive = false_positive;
     server = localStorage.getItem("server");
-    $.getJSON(server + "/issues", params=params, function(data){
+    $.getJSON(server + "/issues/", params=params, function(data){
         if (!false_positive) {
             add_issues_to_table(data.issues, "#issue-body-valid");
             localStorage.setItem("valid-issues", data.total);

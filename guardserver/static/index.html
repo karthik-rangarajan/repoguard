@@ -10,6 +10,7 @@
     <link href="css/datepicker3.css" rel="stylesheet" />
     <script src="js/jquery.min.js" type="application/javascript"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="js/daterange.js" type="application/javascript"></script>
     <script src="js/user.js" type="application/javascript"></script>
     <script src="js/issues.js" type="application/javascript"></script>
     <script src="js/paginate.js" type="application/javascript"></script>
@@ -34,6 +35,15 @@
     </div>
 </nav>
 
+<div class="input-daterange date input-group-sm input-group" data-provide="datepicker" id="date-picker">
+    <span class="input-group-addon">Date Range:</span>
+    <input id="from-date" class="input-sm form-control" />
+    <span class="input-group-addon">to</span>
+    <input id="to-date" class="input-sm form-control" />
+    <span class="input-group-btn input">
+        <button class="btn btn-primary" type="button" id="refresh-issues">Refresh!</button>
+    </span>
+</div>
 
 <ul class="nav nav-tabs" role="tablist" id="issue-tabs">
     <li class="active"><a href="#issue-table-valid" role="tab" data-toggle="tab" id="valid-issues">Valid Issues</a></li>
