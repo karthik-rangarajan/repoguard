@@ -88,7 +88,10 @@ def get_file_contents_by_commit(commit_id):
         return "File Path/Repository is required", 400
     github_querier = GitRepoQuerier(app.config["ORG_NAME"], app.config["GITHUB_TOKEN"])
     file_contents = github_querier.get_file_contents(repo=repo, filename=file_path, commit_id=commit_id)
-    return file_contents
+    response = make_response(file_contents)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Content-Type"] = "text/plain"
+    return response
 
 @app.route('/issue/status/<string:issue_id>', methods=['PUT'])
 def update_issue_state(issue_id):
