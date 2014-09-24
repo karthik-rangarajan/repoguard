@@ -1,18 +1,134 @@
-.table{
-     table-layout: fixed;
-     margin-top: 30px;
- }
+body{
+  color: rgba(0,0,0,.6);
+  font-weight: 300;
+}
+
+.navbar-inverse{
+  background-color: rgba(0,0,0,.9);
+  letter-spacing: 1.5px;
+}
+
+.navbar-inverse li a{
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.nav-emphasis{
+  color: #d7d7d7;
+}
+
+.navbar-brand{
+  background-image: url(../img/addepar-logo-reverse.png);
+  background-position:  -1em .4em;
+  background-size: 5.5em;
+  background-repeat: no-repeat;
+  padding-left: 4em;
+}
+
+.navbar-brand:hover .nav-emphasis{
+  color: #fff;
+}
+
+.content {
+  margin-top: 80px;
+}
+
+a {
+  color: #27AAE1;
+}
+
+.input-daterange {
+  margin-top: 7px;
+}
+
+.input-date-field,
+.dropdown-toggle,
+.input-group-sm > .input-group-btn > .btn.dropdown-toggle,
+.typeahead {
+  border: none;
+  border-bottom: 1px dashed #27AAE1;
+  background: none;
+  box-shadow: none;
+  color: rgba(0,0,0,.7);
+  text-transform: uppercase;
+  font-weight: 200;
+}
+
+.typeahead{
+  text-transform: none;
+}
+
+.table {
+  table-layout: fixed;
+  margin-top: 30px;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td {
+  background-color: #f9f9f9;
+}
+
+.table-striped > tbody > tr:hover > td{
+  background-color: #f7fdff;
+}
 
 .table th, .table td { word-wrap: break-word }
 
-.date {
-     margin-top: 80px;
- }
+th,
+.navbar{
+  font-weight: 400;
+  text-transform: uppercase;
+  font-kerning: normal;
+  letter-spacing: 1px;
+}
 
- .btn-status{
+th{
+  font-size: .8em;
+}
+
+.btn-status {
+  float: right;
+  vertical-align: middle;
   visibility: hidden;
- }
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  text-transform: uppercase;
+  font-weight: 200;
+  font-size: .5em;
+  color: rgba(0,0,0,.4);
+  letter-spacing: .6px;
+  border-radius: 3px;
+}
 
- tr:hover .btn-status{
+.btn-status .glyphicon{
+  font-size: 2em;
+  opacity: .6;
+}
+
+.btn-status:hover{
+  background-color: #e58481;
+  border: 1px solid #d9534f;
+  color: rgba(255,255,255,.6);
+}
+
+tr:hover .btn-status {
   visibility: visible;
- }
+}
+
+.btn-refresh {
+  background: none;
+  color: rgba(0,0,0,.3);
+  font-size: .8em;
+  padding: 0;
+  line-height: normal;
+  margin-left: .5em;
+  border: none;
+}
+
+.pager .disabled > a,
+.pager .disabled > a:hover,
+.pager .disabled > a:focus,
+.pager .previous > a,
+.pager .li > a {
+  border: none;
+  color: #27AAE1;
+}
