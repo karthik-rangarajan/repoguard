@@ -26,7 +26,8 @@
         </div>
         <div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#">All Issues</a></li>
+            <li class="active"><a href="javascript:void(0)" id="true-positive">Valid Issues</a></li>
+            <li><a href="javascript:void(0)" id="false-positive">False Positives</a></li>
             <li><a href="#">Top Rule Hits</a></li>
             <li><a href="#">Top Offenders</a></li>
         </ul>
@@ -45,67 +46,32 @@
     </span>
 </div>
 
-<ul class="nav nav-tabs" role="tablist" id="issue-tabs">
-    <li class="active"><a href="#issue-table-valid" role="tab" data-toggle="tab" id="valid-issues">Valid Issues</a></li>
-    <li><a href="#issue-table-invalid" role="tab" data-toggle="tab">False Positives</a></li>
-</ul>
-
 <!-- This could be replaced with handlebars/done in a better way -->
-<div class="tab-content">
-    <div class="container-fluid tab-pane active"  id="issue-table-valid">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered table-hover table-striped table-responsive active">
-                    <thead>
-                    <tr>
-                        <th style="width:8%">Repository</th>
-                        <th style="width:20%">Matching Line</th>
-                        <th style="width:20%">File Name</th>
-                        <th style="width:12%">Commit Description</th>
-                        <th style="width: 15%">Triggered By</th>
-                        <th style="width:15%">Last Reviewed By</th>
-                        <th style="width:10%">Change Status</th>
-                    </tr>
-                    </thead>
-                    <tbody id="issue-body-valid">
+<div class="container-fluid"  id="issue-table">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover table-striped table-responsive active">
+                <thead>
+                <tr>
+                    <th style="width:8%">Repository</th>
+                    <th style="width:20%">Matching Line</th>
+                    <th style="width:20%">File Name</th>
+                    <th style="width:12%">Commit Description</th>
+                    <th style="width: 15%">Triggered By</th>
+                    <th style="width:15%">Last Reviewed By</th>
+                    <th style="width:10%">Change Status</th>
+                </tr>
+                </thead>
+                <tbody id="issue-body">
 
-                    </tbody>
-                </table>
-                <ul class="pager">
-                    <li class="previous" id="valid-previous"><a href="javascript:void(0)">&larr; Previous</a></li>
-                    <li class="next" id="valid-next"><a href="javascript:void(0)">Next &rarr;</a></li>
-                </ul>
-            </div>
+                </tbody>
+            </table>
+            <ul class="pager">
+                <li class="previous" id="previous"><a href="javascript:void(0)">&larr; Previous</a></li>
+                <li class="next" id="next"><a href="javascript:void(0)">Next &rarr;</a></li>
+            </ul>
         </div>
     </div>
-
-    <div class="container-fluid tab-pane"  id="issue-table-invalid">
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered table-hover table-striped table-responsive">
-                    <thead>
-                    <tr>
-                        <th style="width:8%">Repository</th>
-                        <th style="width:20%">Matching Line</th>
-                        <th style="width:20%">File Name</th>
-                        <th style="width:12%">Commit Description</th>
-                        <th style="width: 15%">Triggered By</th>
-                        <th style="width:15%">Last Reviewed By</th>
-                        <th style="width:10%">Change Status</th>
-                    </tr>
-                    </thead>
-                    <tbody id="issue-body-invalid">
-
-                    </tbody>
-                </table>
-                <ul class="pager">
-                    <li class="previous" id="invalid-previous"><a href="javascript:void(0)">&larr; Previous</a></li>
-                    <li class="next" id="invalid-next"><a href="javascript:void(0)">Next &rarr;</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <div class="modal fade" id="code-holder" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="code-label">

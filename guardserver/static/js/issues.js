@@ -1,43 +1,28 @@
 jQuery(function(){
-    var valid_tab = Object();
-    valid_tab.current_page = 1;
-    valid_tab.size = 10;
-    var invalid_tab = Object();
-    invalid_tab.current_page = 1;
-    invalid_tab.size = 10;
-    localStorage.setItem("valid_tab", JSON.stringify(valid_tab));
-    localStorage.setItem("invalid_tab", JSON.stringify(invalid_tab));
-    get_issues(false);
-    get_issues(true);
+    var issue_data = Object();
+    issue_data.current_page = 1;
+    issue_data.size = 10;
+    localStorage.setItem("issue_data", JSON.stringify(issue_data));
+    localStorage.setItem("false_positive", "false");
+    get_issues();
+    get_issues();
 });
 
-function get_issues(false_positive) {
-    var tab_state;
-    if (false_positive) {
-        tab_state = JSON.parse(localStorage.getItem("invalid_tab"));
-    }
-    else {
-        tab_state = JSON.parse(localStorage.getItem("valid_tab"));
-    }
+function get_issues() {
+    var false_positive = localStorage.getItem("false_positive") === "true";
+    var page_state = JSON.parse(localStorage.getItem("invalid_tab"));
     var start_time = localStorage.getItem("start_date");
     var end_time = localStorage.getItem("end_date");
     var params = Object();
     params.start_time = start_time;
     params.end_time = end_time;
-    params.from = (tab_state.current_page - 1) * tab_state.size;
-    params.to = tab_state.size;
+    params.from = (page_state.current_page - 1) * page_state.size;
+    params.to = page_state.size;
     params.false_positive = false_positive;
-    server = localStorage.getItem("server");
+    var server = localStorage.getItem("server");
     $.getJSON(server + "/issues/", params=params, function(data){
-        if (!false_positive) {
-            add_issues_to_table(data.issues, "#issue-body-valid");
-            localStorage.setItem("valid-issues", data.total);
-        }
-        else {
-            add_issues_to_table(data.issues, "#issue-body-invalid");
-            localStorage.setItem("invalid-issues", data.total);
-        }
-
+        add_issues_to_table(data.issues, "#issue-body");
+        localStorage.setItem("issues", data.total);
     })
 }
 
@@ -80,15 +65,6 @@ function add_issues_to_table(data, dom_element) {
                 type: 'PUT',
                 data: params,
                 success: function(data) {
-                    $("#" + index_id).attr("data-status", !params.status);
-                    if (!params.status) {
-                        $("#" + index_id).text("Mark as Invalid").closest("tr").find(".reviewer").text(localStorage.getItem("current_user"));
-                        $("#issue-body-valid").append($(table_row).clone(true, true));
-                    }
-                    else {
-                        $("#" + index_id).text("Mark as Valid").closest("tr").find(".reviewer").text(localStorage.getItem("current_user"));
-                        $("#issue-body-invalid").append($(table_row).clone(true, true));
-                    }
                     $(table_row).remove();
                 }
             })

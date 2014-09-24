@@ -1,64 +1,54 @@
 jQuery(function(){
 
-    var previous_button_valid = $("#valid-previous");
-    var previous_button_invalid =  $("#invalid-previous");
-    var next_button_valid = $("#valid-next");
-    var next_button_invalid = $("#invalid-next");
+    var next_button = $("#next");
+    var previous_button = $("#previous");
 
-    previous_button_valid.addClass("disabled");
-    previous_button_invalid.addClass("disabled");
+    previous_button.addClass("disabled");
 
-    var valid_tab_state = JSON.parse(localStorage.getItem("valid_tab"));
-    var invalid_tab_state = JSON.parse(localStorage.getItem("invalid_tab"));
+    var page_state = JSON.parse(localStorage.getItem("issue_data"));
 
-    if (valid_tab_state.size > localStorage.getItem("valid-issues")) {
-        next_button_valid.addClass("disabled");
+
+    if (page_state.size > localStorage.getItem("valid-issues")) {
+        next_button.addClass("disabled");
     }
 
-    if (invalid_tab_state.size > localStorage.getItem("invalid-issues")) {
-        next_button_invalid.addClass("disabled");
-    }
-
-    previous_button_valid.click(function(){
-        change_page(true, false, this, "#valid-next");
+    previous_button.click(function(){
+        change_page(false, this, "#next");
     });
 
-    next_button_valid.click(function(){
-        change_page(true, true, this, "#valid-previous");
+    next_button.click(function(){
+        change_page(true, this, "#previous");
     });
 
-    previous_button_invalid.click(function(){
-        change_page(false, false, this, "#invalid-next");
+    $("#false-positive").click(function(){
+        localStorage.setItem("false_positive", "true");
+        $(this).parent().parent().find('.active').removeClass('active');
+        $(this).parent().addClass("active");
+        get_issues();
     });
 
-    next_button_invalid.click(function(){
-        change_page(false, true, this, "#invalid-previous");
-    });
-
+    $("#true-positive").click(function(){
+        localStorage.setItem("false_positive", "false");
+        $(this).parent().parent().find('.active').removeClass('active');
+        $(this).parent().addClass("active");
+        get_issues();
+    })
 });
 
-function change_page(valid_tab, next_page, this_element, dom_element) {
-    var tab_state, key, issues_size;
-    if (valid_tab) {
-        tab_state = JSON.parse(localStorage.getItem("valid_tab"));
-        key = "valid_tab";
-        issues_size = localStorage.getItem("valid-issues");
-    }
-    else {
-        tab_state = JSON.parse(localStorage.getItem("invalid_tab"));
-        key = "invalid_tab";
-        issues_size = localStorage.getItem("valid-issues");
-    }
+function change_page(next_page, this_element, dom_element) {
+    var page_state, key, issues_size;
+    page_state = localStorage.getItem("issue_data");
+    issues_size = localStorage.getItem("issues");
     if (next_page) {
-        tab_state.current_page += 1;
-        if (tab_state.current_page * tab_state.size > issues_size) {
+        page_state.current_page += 1;
+        if (page_state.current_page * tab_state.size > issues_size) {
             $(this_element).addClass("disabled");
         }
     }
     else {
-        if (tab_state.current_page != 1) {
-            tab_state.current_page -= 1;
-            if (tab_state.current_page == 1) {
+        if (page_state.current_page != 1) {
+            page_state.current_page -= 1;
+            if (page_state.current_page == 1) {
                 $(this_element).addClass("disabled");
             }
         }
@@ -67,6 +57,6 @@ function change_page(valid_tab, next_page, this_element, dom_element) {
     if ($(dom_element).hasClass("disabled")) {
         $(dom_element).removeClass("disabled");
     }
-    localStorage.setItem(key, JSON.stringify(tab_state));
-    get_issues(7, !valid_tab);
+    localStorage.setItem(key, JSON.stringify(page_state));
+    get_issues();
 }
