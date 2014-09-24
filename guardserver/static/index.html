@@ -37,41 +37,39 @@
     </div>
 </nav>
 
-<div class="input-daterange date input-group-sm input-group" data-provide="datepicker" id="date-picker">
-    <span class="input-group-addon">Date Range:</span>
-    <input id="from-date" class="input-sm form-control" />
-    <span class="input-group-addon">to</span>
-    <input id="to-date" class="input-sm form-control" />
-    <span class="input-group-btn input">
-        <button class="btn btn-primary" type="button" id="refresh-issues">Refresh!</button>
-    </span>
-</div>
-
 <!-- This could be replaced with handlebars/done in a better way -->
-<div class="container-fluid"  id="issue-table">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-bordered table-hover table-striped table-responsive active">
-                <thead>
-                <tr>
-                    <th style="width:8%">Repository</th>
-                    <th style="width:20%">Matching Line</th>
-                    <th style="width:20%">File Name</th>
-                    <th style="width:12%">Commit Description</th>
-                    <th style="width: 15%">Triggered By</th>
-                    <th style="width:15%">Last Reviewed By</th>
-                    <th style="width:10%">Change Status</th>
-                </tr>
-                </thead>
-                <tbody id="issue-body">
-
-                </tbody>
-            </table>
-            <ul class="pager">
-                <li class="previous" id="previous"><a href="javascript:void(0)">&larr; Previous</a></li>
-                <li class="next" id="next"><a href="javascript:void(0)">Next &rarr;</a></li>
-            </ul>
+<div class="container-fluid col-md-12">
+    <div class="col-md-12">
+        <div class="input-daterange date input-group-sm input-group col-md-6" data-provide="datepicker" id="date-picker">
+            <span class="input-group-addon">Date Range:</span>
+            <input id="from-date" class="input-sm form-control" />
+            <span class="input-group-addon">to</span>
+            <input id="to-date" class="input-sm form-control" />
+            <span class="input-group-btn input">
+                <button class="btn btn-primary" type="button" id="refresh-issues">Refresh!</button>
+            </span>
         </div>
+    </div>
+    <div class="col-md-12">
+        <table class="table table-hover table-striped table-responsive active">
+            <thead>
+            <tr>
+                <th style="width:8%">Repository</th>
+                <th style="width:20%">Matching Line</th>
+                <th style="width:20%">File Name</th>
+                <th style="width:12%">Commit Description</th>
+                <th style="width: 15%">Triggered By</th>
+                <th style="width:15%">Reviewed</th>
+            </tr>
+            </thead>
+            <tbody id="issue-body">
+
+            </tbody>
+        </table>
+        <ul class="pager">
+            <li class="previous" id="previous"><a href="javascript:void(0)">&larr; Previous</a></li>
+            <li class="next" id="next"><a href="javascript:void(0)">Next &rarr;</a></li>
+        </ul>
     </div>
 </div>
 

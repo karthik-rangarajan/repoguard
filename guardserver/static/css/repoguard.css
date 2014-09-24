@@ -1,19 +1,18 @@
- #issue-table table, table{
+.table{
      table-layout: fixed;
      margin-top: 30px;
-     margin-left: 10px;
-     margin-right: 10px;
  }
 
- #issue-tabs {
-    margin-top: 30px;
-    margin-left: 10px;
-    margin-right: 10px;
+.table th, .table td { word-wrap: break-word }
 
- }
-
- #issue-table th, #issue-table td { word-wrap: break-word }
-
- #date-picker {
+.date {
      margin-top: 80px;
+ }
+
+ .btn-status{
+  visibility: hidden;
+ }
+
+ tr:hover .btn-status{
+  visibility: visible;
  }

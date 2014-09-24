@@ -38,8 +38,8 @@ function add_issues_to_table(data, dom_element) {
             '<td id="' + source["commit_id"] + '"><a href="javascript:void(0)" title="Click to show file">' + source["filename"] + "</a></td>" +
             "<td>" + source["commit_description"] + "</td>" +
             "<td title='" + source["description"] + "'>" + source["check_id"] + "</td>" +
-            "<td class='reviewer'>" + source["last_reviewer"] + "</td>" +
-            '<td><button type="button" class="btn btn-primary" id="' + this["id"] + '" data-status="' + status_change[1] + '">' +
+            "<td class='reviewer'>" + source["last_reviewer"] +
+            '<br><button type="button" class="btn btn-status btn-primary" id="' + this["id"] + '" data-status="' + status_change[1] + '">' +
             'Mark As ' + status_change[0] + '</button>' +
             "</tr>";
         $(dom_element).prepend(table_row);
