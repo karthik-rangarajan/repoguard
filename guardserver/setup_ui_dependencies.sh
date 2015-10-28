@@ -17,9 +17,9 @@ curl https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js > static/
 curl https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js > static/js/prettify.js
 
 # Get datepicker
-curl https://raw.githubusercontent.com/eternicode/bootstrap-datepicker/release/js/bootstrap-datepicker.js > static/js/bootstrap-datepicker.js
-curl https://raw.githubusercontent.com/eternicode/bootstrap-datepicker/release/js/datepicker3.js > static/css/datepicker3.css
-curl https://raw.githubusercontent.com/eternicode/bootstrap-datepicker/release/css/datepicker.css > static/css/datepicker.css
+curl https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/js/bootstrap-datepicker.min.js > static/js/bootstrap-datepicker.js
+curl https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker3.css > static/css/datepicker3.css
+curl https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.0/css/bootstrap-datepicker.css > static/css/datepicker.css
 
 # Get Typeahead and Bloodhound
 curl https://raw.githubusercontent.com/twitter/typeahead.js/master/dist/typeahead.bundle.min.js > static/js/typeahead.bundle.min.js

@@ -320,10 +320,14 @@ class RepoGuard:
                     "author": author,
                     "commit_message": commit_description
                 }
-                result = self.code_checker.check(diff.split('\n'), check_context, repo)
-                alerts = [create_alert(rule, line, diff, diff_first_line) for rule, line in result]
+                line_results = self.code_checker.check_lines(diff.split('\n'), check_context, repo)
+                line_alerts = [create_alert(rule, line, diff, diff_first_line) for rule, line in line_results]
+                file_results = self.code_checker.check_file(filename, check_context, repo)
+                file_alerts = [create_alert(rule, line, diff, diff_first_line) for rule, line in file_results]
 
-                matches_in_rev.extend(alerts)
+
+                matches_in_rev.extend(line_alerts)
+                matches_in_rev.extend(file_alerts)
         except (subprocess.CalledProcessError, OSError) as e:
             self.logger.exception('Failed running: %s' % cmd)
 

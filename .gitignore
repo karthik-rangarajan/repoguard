@@ -3,6 +3,9 @@
 .#*
 *.pid
 virtualenv
+venv
 repos
+*.json
 **/config.yml
 **/.idea
+addepar_rules

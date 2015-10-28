@@ -8,14 +8,27 @@ class CodeChecker:
         self.repo_groups = repo_groups
         self.rules_to_groups = rules_to_groups
 
-    def check(self, lines, context, repo=None):
+    def check_lines(self, lines, context, repo=None):
         rules_applied_for_this_repo = filter(self._filter_rules(repo.name), self.rules) if repo else self.rules
         # pre-filter rules with line-invariant rules:
         applicable_rules = filter(self._check_line_invariants(context), rules_applied_for_this_repo)
+        # filter further to preclude file only rules
+        line_only_rules = filter(self._remove_file_only_rules(), applicable_rules)
         # check each line
-        alerts, line_ctx = reduce(self._check_all(applicable_rules), lines, (list(), context))
+        alerts, line_ctx = reduce(self._check_all_lines(line_only_rules), lines, (list(), context))
         # we do not use line_ctx at alerting, so we drop it
         return alerts
+
+    def check_file(self, file, context, repo=None):
+        rules_applied_for_this_repo = filter(self._filter_rules(repo.name), self.rules) if repo else self.rules
+        # pre-filter rules with line-invariant rules:
+        applicable_rules = filter(self._check_line_invariants(context), rules_applied_for_this_repo)
+        # filter further to include file only rules
+        file_only_rules = filter(self._include_file_only_rules(), applicable_rules)
+        # check each file
+        alerts = reduce(self._check_file(file_only_rules), [file], (list(), context))
+        return alerts
+
 
     def _filter_rules(self, repo_name):
         def rule_filter(rule):
@@ -38,7 +51,13 @@ class CodeChecker:
 
         return filename_filter
 
-    def _check_all(self, rules):
+    def _remove_file_only_rules(self):
+        def no_line_filter(rule):
+            return any(e.key == "line" for e in rule.evaluators)
+
+        return no_line_filter
+
+    def _check_all_lines(self, rules):
         def check_line(check_ctx, line):
             if len(line) > 512:
                 # probably not readable source, but it's hard to match regexes at least
@@ -53,6 +72,22 @@ class CodeChecker:
             return (alerts, line_ctx)
 
         return check_line
+
+    def _include_file_only_rules(self):
+        def only_file_filter(rule):
+            return all(e.key == "file" for e in rule.evaluators)
+
+        return only_file_filter
+
+    def _check_file(self, file_only_rules):
+        def check_file(check_ctx, file):
+            alerts, file_ctx = check_ctx
+            for rule in file_only_rules:
+                matches = [e.matches(check_ctx, file) for e in rule.evaluators]
+                if len(matches) > 0 and all(matches):
+                    alerts.append((rule, "File Change"))
+            return alerts
+        return check_file
 
 
 class Alert:

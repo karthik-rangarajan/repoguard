@@ -148,6 +148,9 @@ class FileEvaluator(ContextBasedPatternEvaluator):
     def __init__(self, rule):
         super(FileEvaluator, self).__init__(rule, "file", "filename")
 
+    def __eq__(self, other):
+        return self.key == other.key
+
 
 class CommitMessageEvalFactory:
     def create(self, rule):
